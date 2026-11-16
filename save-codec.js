@@ -7,7 +7,7 @@ export const createSaveCodec=function createSaveCodec(getDeals=()=>[]){
     for(let i=1;i<31;i++)if(![2,20,24,25].includes(i)){if(!/^\d+$/.test(v[i]))throw Error('Invalid game save');number(Number(v[i]));}
     if(!/^\d{4}-\d{2}-\d{2}$/.test(v[20])||!Number.isFinite(Date.parse(v[20]+'T12:00:00Z')))throw Error('Invalid save date');
     const list=(text,length,max)=>{const a=text.split(',');if(length&&a.length!==length)throw Error('Invalid game save');return a.map(n=>{if(!/^\d+$/.test(n))throw Error('Invalid game save');return number(Number(n),max);});};
-    const owned=list(v[2],0,144);if(new Set(owned).size!==owned.length||![0,1,2].every(n=>owned.includes(n))||!owned.includes(Number(v[3])))throw Error('Invalid dragon collection');
+    const owned=list(v[2],0,144);if(new Set(owned).size!==owned.length||![0,1,2].every(n=>owned.includes(n))||!owned.includes(Number(v[3])))throw Error('Invalid dragon collection');if(owned.includes(144)&&owned.length!==145)throw Error('Invalid sealed dragon progress');
     if(Number(v[5])>9||Number(v[26])>524||Number(v[27])>100||Number(v[28])>100||Number(v[29])>1023||Number(v[30])>63)throw Error('Invalid game save');for(const n of [21,22,23])if(Number(v[n])>9)throw Error('Invalid game save');list(v[24],14,9);
     list(v[25],145,10).forEach((n,id)=>{if(n>required(id)||owned.includes(id)&&n!==required(id)||!owned.includes(id)&&n>=required(id))throw Error('Invalid purification progress');});
     const name=String(value.name||'Keeper').replace(/[<>\u0000-\u001f]/g,'').trim().slice(0,24)||'Keeper',web={pvpWins:number(value.web?.pvpWins||0),coopWins:number(value.web?.coopWins||0)};return {native:v.join('|'),name,web};
