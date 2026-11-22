@@ -13,7 +13,7 @@ export const createNativeArt=function createNativeArt(E){
         let element=WildsProfile.element(id),tier=WildsProfile.rarity(id),family=WildsProfile.family(id),base=WildsProfile.COLORS[element];
         if(family>0)base=mix(base,[0,0xffd5f6ff,0xff394f67,0xff365279,0xfffff2cf,0xff5e3c52,0xffb9afff,0xff758b98][family],[0,.19,.25,.18,.23,.18,.25,.25][family]);
         let flap=Math.sin(clock*(moving?10:2.8))*6,bob=Math.sin(clock*3)*1.7;
-        c.save();c.scale((1+evolution*.16)*[1,.88,1.1,.85,.97,1.08,.94,1.14][family],(1+evolution*.16)*[1,1.02,.95,1.08,1,1.02,1.02,.98][family]);oval(c,-32,-7,34,7,0x55041325);c.translate(0,bob);
+        c.save();c.scale((1+evolution*.16)*[1,.88,1.1,.85,.97,1.08,.94,1.14][family],(1+evolution*.16)*[1,1.02,.95,1.08,1,1.02,1.02,.98][family]);oval(c,-18,-3,61,17,0x28041325);oval(c,-32,-7,34,7,0x55041325);c.translate(0,bob);
         if(family==6){p.setShader(null);p.setColor(0x8889eaff);p.setStyle(Paint.Style.STROKE);p.setStrokeWidth(1.3);c.drawOval(-60,-102,60,-18,p);c.drawOval(-51,-115,51,-6,p);p.setStyle(Paint.Style.FILL);}
         if(family==7)for(let i=0;i<4;i++)tri(c,16+i*8,-20,24+i*8,-57+i*2,35+i*8,-18,0xffa6b5b6);
         if(family==3){path.reset();path.moveTo(16,-19);path.cubicTo(94,24,101,-42,63,-31);path.cubicTo(42,-24,78,-14,83,-39);p.setShader(null);p.setColor(base);p.setStyle(Paint.Style.STROKE);p.setStrokeWidth(11);c.drawPath(path,p);p.setStyle(Paint.Style.FILL);tri(c,80,-35,93,-57,73,-45,0xffd9e7d1);}
@@ -35,14 +35,14 @@ export const createNativeArt=function createNativeArt(E){
         // Iridescent wing veins and overlapping reflective scale plates.
         for(const side of [-1,1])for(let i=0;i<4;i++){let xx=side*(24+i*9),yy=-43-i*6+flap*.45;line(c,side*17,-32,xx,yy,mix(base,Color.WHITE,.4),.9);oval(c,xx-1.4,yy-1.4,xx+1.4,yy+1.4,0xaaefffff);}
         // Body, scales, paws and segmented belly.
-        gradient(c,mix(base,Color.WHITE,.12),mix(base,0xff122e40,.48),-44,0);c.drawOval(-23,-47,24,-1,p);p.setShader(null);outline(c,-23,-47,24,-1,0xff284653,1.1);oval(c,-12,-33,13,-5,0xffe4ecce);
+        volume(c,base,-9,-38,51);c.drawOval(-23,-47,24,-1,p);p.setShader(null);outline(c,-23,-47,24,-1,0xff284653,1.1);oval(c,-12,-33,13,-5,0xffe4ecce);
         for(let y=0;y<4;y++)line(c,-9,-27+y*6,10,-27+y*6,0x55748c82,1);
         for(const side of [-1,1])for(let row=0;row<4;row++){let xx=side*(16+row%2*2),yy=-32+row*6;tri(c,xx-3,yy-2,xx+3,yy-2,xx,yy+3,mix(base,Color.WHITE,.28));line(c,xx-2,yy-2,xx+2,yy-2,0x99ffffff,.7);}
         if(family==2)for(const side of [-1,1]){oval(c,side*23-12,-40,side*23+12,-17,0xff718995);tri(c,side*23-10,-30,side*23,-47,side*23+10,-30,0xffc7d4c0);}
         if(family==7)for(const side of [-1,1]){oval(c,side*23-14,-43,side*23+14,-15,0xff5c7889);tri(c,side*23-13,-29,side*23,-52,side*23+13,-29,0xffb9c9c7);line(c,side*23,-49,side*23,-24,0xffedf0d8,1.5);}
         for(const side of [-1,1]){oval(c,side*16-8,-11,side*16+8,3,base);for(let k=0;k<3;k++)tri(c,side*16-6+k*4,1,side*16-4+k*4,-5,side*16-2+k*4,1,0xfff7e8c6);}
         // Broad dragon muzzle, curved horns, brow ridges and glassy eyes.
-        gradient(c,mix(base,Color.WHITE,.27),mix(base,0xff1d4053,.28),-77,-26);c.drawOval(-28,-75,28,-29,p);p.setShader(null);outline(c,-28,-75,28,-29,0xff2f4c59,1.1);oval(c,-23,-71,22,-53,0x33ffffff);
+        volume(c,base,-13,-66,57);c.drawOval(-28,-75,28,-29,p);p.setShader(null);outline(c,-28,-75,28,-29,0xff2f4c59,1.1);oval(c,-23,-71,22,-53,0x33ffffff);
         for(const side of [-1,1]){c.save();c.scale(side,1);path.reset();path.moveTo(12,-67);path.quadTo(32,-85,22,-98-tier*5);path.quadTo(41,-79,25,-58);path.close();fill(c,0xfff5deae);tri(c,23,-55,40,-63,29,-41,base);c.restore();}
         if(family==1){tri(c,-20,-68,-45,-87,-29,-56,0xffd8eaf0);tri(c,20,-68,45,-87,29,-56,0xffd8eaf0);}
         if(family==2){tri(c,-20,-63,0,-76,20,-63,0xff647f91);line(c,-15,-63,15,-63,0xffe3ddbb,2);}
@@ -104,6 +104,7 @@ export const createNativeArt=function createNativeArt(E){
     }
     function mix(a,b,weight){return Color.rgb((Color.red(a)*(1-weight)+Color.red(b)*weight),(Color.green(a)*(1-weight)+Color.green(b)*weight),(Color.blue(a)*(1-weight)+Color.blue(b)*weight));}
     function fill(c,color){p.setShader(null);p.setStyle(Paint.Style.FILL);p.setColor(color);c.drawPath(path,p);}
+    function volume(c,base,x,y,radius){p.setStyle(Paint.Style.FILL);p.setColor(Color.WHITE);p.setShader(new RadialGradient(x,y,radius,[mix(base,Color.WHITE,.52),base,mix(base,0xff102839,.65)]));}
     function gradient(c,top,bottom,y,end){p.setStyle(Paint.Style.FILL);p.setColor(Color.WHITE);p.setShader(new LinearGradient(0,y,18,end,top,bottom,Shader.TileMode.CLAMP));}
     function line(c,x,y,a,b,color,width){p.setShader(null);p.setStyle(Paint.Style.STROKE);p.setStrokeWidth(width);p.setColor(color);c.drawLine(x,y,a,b,p);p.setStyle(Paint.Style.FILL);}
     function oval(c,l,t,r,b,color){p.setShader(null);p.setColor(color);p.setStyle(Paint.Style.FILL);c.drawOval(l,t,r,b,p);}
